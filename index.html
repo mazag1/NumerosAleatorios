@@ -4,8 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .defectuosa {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Simulación de Producción de Botellas</h1>
+        <label for="numBotellas">Número de botellas a producir:</label>
+        <input type="number" id="numBotellas" value="100">
+        <br><br>
+        <label for="probabilidadDefecto">Probabilidad de defecto (0 a 1):</label>
+        <input type="number" id="probabilidadDefecto" step="0.01" value="0.05">
+        <br><br>
+        <button onclick="generarBotellas()">Generar botellas</button>
+
+        <h2>Resultados:</h2>
+        <ul id="resultados"></ul>
+    </div>
+
+    <!-- Funcionamiento para la ejecución -->
+    <script>
+        function generarBotellas() {
+            // Obtenemos los valores de los inputs
+            //obtenemos los valores del numero de botellas
+            const numBotellas = document.getElementById('numBotellas').value;
+            //obtenemos el valor de la probabilidad
+            const probabilidadDefecto = document.getElementById('probabilidadDefecto').value;
+
+            const resultados = document.getElementById('resultados');
+            resultados.innerHTML = '';  // Limpiamos los resultados previos
+
+            //valor por defecto 0, para que comience con un valor.
+            let defectuosas = 0;
+
+            for (let i = 1; i <= numBotellas; i++) {
+                const esDefectuosa = Math.random() < probabilidadDefecto;  // Generamos aleatoriamente si es defectuosa
+                const listItem = document.createElement('li');
+                
+                if (esDefectuosa) {
+                    listItem.textContent = `Botella ID: ${i} es defectuosa`;
+                    listItem.classList.add('defectuosa');
+                    defectuosas++;
+                } else {
+                    listItem.textContent = `Botella ID: ${i} es correcta`;
+                }
+
+                resultados.appendChild(listItem);
+            }
+
+            // Mostramos el total de defectuosas
+            const totalItem = document.createElement('li');
+            totalItem.textContent = `Total de botellas defectuosas: ${defectuosas}`;
+            totalItem.style.fontWeight = 'bold';
+            resultados.appendChild(totalItem);
+        }
+    </script>
 </body>
 </html>
