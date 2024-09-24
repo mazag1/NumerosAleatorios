@@ -13,9 +13,16 @@
             margin: auto;
             padding: 20px;
         }
+        .titulo{
+            text-align: center;
+        }
         button {
             padding: 10px 20px;
             font-size: 16px;
+            border-radius: 150px;
+        }
+        .button{
+            text-align: center;
         }
         .botellas-container {
             display: flex;
@@ -40,15 +47,25 @@
 </head>
 <body>
     <div class="container">
-        <h1 style="text-align: center;">Simulación de Producción de Botellas</h1>
-        <label for="numBotellas">Número de botellas a producir:</label>
-        <input type="number" id="numBotellas" value="100">
-        <br><br>    
+        <h1 class="titulo">Simulación de Producción de Botellas</h1>
+        
+        <!-- Campo para definir horas de producción -->
+        <label for="horas">Horas de producción:</label>
+        <input type="number" id="horas" value="1">
+        <br><br>
+
+        <!-- Campo para definir la cantidad de botellas producidas por hora -->
+        <label for="produccionPorHora">Cantidad de botellas por hora:</label>
+        <input type="number" id="produccionPorHora" value="100">
+        <br><br>
+
+        <!-- Campo para definir la probabilidad de que una botella sea defectuosa -->
         <label for="probabilidadDefecto">Probabilidad de defecto (0 a 1):</label>
         <input type="number" id="probabilidadDefecto" step="0.01" value="0.05">
         <br><br>
-        <div style="text-align: center;">
-            <button onclick="generarBotellas()" style="border-radius: 10px; width: 120px; background-color: #6476ff; color: white;">Generar botellas</button>
+        
+        <div class="button">
+            <button onclick="generarProduccion()">Generar producción</button>
         </div>
 
         <h2>Resultados:</h2>
@@ -58,11 +75,14 @@
 
     <!-- Funcionamiento para la ejecución -->
     <script>
-        function generarBotellas() {
+        function generarProduccion() {
             // Obtenemos los valores de los inputs
-            const numBotellas = document.getElementById('numBotellas').value;
+            const horas = document.getElementById('horas').value;
+            const produccionPorHora = document.getElementById('produccionPorHora').value;
             const probabilidadDefecto = document.getElementById('probabilidadDefecto').value;
 
+            // Cálculo de la producción total
+            const totalBotellas = horas * produccionPorHora;
             const resultados = document.getElementById('resultados');
             const totalDefectuosasDiv = document.getElementById('totalDefectuosas');
             resultados.innerHTML = '';  // Limpiamos los resultados previos
@@ -70,7 +90,7 @@
 
             let defectuosas = 0;
 
-            for (let i = 1; i <= numBotellas; i++) {
+            for (let i = 1; i <= totalBotellas; i++) {
                 const esDefectuosa = Math.random() < probabilidadDefecto;  // Generamos aleatoriamente si es defectuosa
 
                 // Crear div contenedor de la botella
@@ -93,8 +113,8 @@
                 resultados.appendChild(botellaItem);
             }
 
-            // Mostramos el total de defectuosas
-            totalDefectuosasDiv.textContent = `Total de botellas defectuosas: ${defectuosas}`;
+            // Mostramos el total de defectuosas y el total de producción
+            totalDefectuosasDiv.textContent = `Total de botellas producidas: ${totalBotellas}, Defectuosas: ${defectuosas}`;
         }
     </script>
 </body>
