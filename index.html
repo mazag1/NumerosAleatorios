@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Simulación de Producción de Botellas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,66 +17,84 @@
             padding: 10px 20px;
             font-size: 16px;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        .botellas-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
         }
-        .defectuosa {
-            color: red;
+        .botella-item {
+            width: calc(20% - 10px); /* Ajuste para que haya 5 elementos por fila con espacio entre ellos */
+            box-sizing: border-box;
+        }
+        .botella-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .total-defectuosas {
+            margin-top: 20px;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Simulación de Producción de Botellas de Plastico</h1>
+        <h1 style="text-align: center;">Simulación de Producción de Botellas</h1>
         <label for="numBotellas">Número de botellas a producir:</label>
         <input type="number" id="numBotellas" value="100">
-        <br><br>
+        <br><br>    
         <label for="probabilidadDefecto">Probabilidad de defecto (0 a 1):</label>
         <input type="number" id="probabilidadDefecto" step="0.01" value="0.05">
         <br><br>
-        <button onclick="generarBotellas()">Generar botellas</button>
+        <div style="text-align: center;">
+            <button onclick="generarBotellas()" style="border-radius: 10px; width: 120px; background-color: #6476ff; color: white;">Generar botellas</button>
+        </div>
 
         <h2>Resultados:</h2>
-        <ul id="resultados"></ul>
+        <div class="botellas-container" id="resultados"></div>
+        <div id="totalDefectuosas" class="total-defectuosas"></div>
     </div>
 
     <!-- Funcionamiento para la ejecución -->
     <script>
         function generarBotellas() {
             // Obtenemos los valores de los inputs
-            //obtenemos los valores del numero de botellas
             const numBotellas = document.getElementById('numBotellas').value;
-            //obtenemos el valor de la probabilidad
             const probabilidadDefecto = document.getElementById('probabilidadDefecto').value;
 
             const resultados = document.getElementById('resultados');
+            const totalDefectuosasDiv = document.getElementById('totalDefectuosas');
             resultados.innerHTML = '';  // Limpiamos los resultados previos
+            totalDefectuosasDiv.innerHTML = '';  // Limpiamos el contador de defectuosas
 
-            //valor por defecto 0, para que comience con un valor.
             let defectuosas = 0;
 
             for (let i = 1; i <= numBotellas; i++) {
                 const esDefectuosa = Math.random() < probabilidadDefecto;  // Generamos aleatoriamente si es defectuosa
-                const listItem = document.createElement('li');
-                
+
+                // Crear div contenedor de la botella
+                const botellaItem = document.createElement('div');
+                botellaItem.classList.add('botella-item');
+
+                const imagen = document.createElement('img');
+
+                // Definimos la imagen según si es defectuosa o no
                 if (esDefectuosa) {
-                    listItem.textContent = `Botella ID: ${i} es defectuosa`;
-                    listItem.classList.add('defectuosa');
+                    imagen.src = 'img/botella_rota.svg';
+                    imagen.alt = `Botella ${i} defectuosa`;
                     defectuosas++;
                 } else {
-                    listItem.textContent = `Botella ID: ${i} es correcta`;
+                    imagen.src = 'img/botella_buena.svg';
+                    imagen.alt = `Botella ${i} correcta`;
                 }
 
-                resultados.appendChild(listItem);
+                botellaItem.appendChild(imagen);
+                resultados.appendChild(botellaItem);
             }
 
             // Mostramos el total de defectuosas
-            const totalItem = document.createElement('li');
-            totalItem.textContent = `Total de botellas defectuosas: ${defectuosas}`;
-            totalItem.style.fontWeight = 'bold';
-            resultados.appendChild(totalItem);
+            totalDefectuosasDiv.textContent = `Total de botellas defectuosas: ${defectuosas}`;
         }
     </script>
 </body>
