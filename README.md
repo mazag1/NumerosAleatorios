@@ -1,0 +1,1 @@
+Programa para sacar aleatoreamente una botella defectuosa en el proceso, de la creación de la botella.
